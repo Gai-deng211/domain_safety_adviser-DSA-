@@ -11,8 +11,19 @@ services:
     depends_on:
       psql_db:
         condition: service_healthy
+    
+  # 2. Pytest container
+  tests:
+    image: fastapi_app:latest
+    container_name: pytest_container
+    command: pytest -v
+    depends_on:
+      psql_db:
+        condition: service_healthy
+    profiles:
+      - testing
 
-  # 2. PostgreSQL database container
+  # 3. PostgreSQL database container
   psql_db:
     image: postgres:16
     container_name: postgresql_container
